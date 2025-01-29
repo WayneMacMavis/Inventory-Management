@@ -1,0 +1,42 @@
+/* AddItemForm Styles */
+.add-item-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 40px;
+  }
+  
+  .add-item-form input,
+  .add-item-form select,
+  .add-item-form button {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+  }
+  
+  .add-item-form input,
+  .add-item-form select {
+    background-color: #f4f4f4;
+    color: #2c3e50;
+  }
+  
+  .add-item-form input:focus,
+  .add-item-form select:focus {
+    outline: none;
+    border-color: #3498db;
+  }
+  
+  .add-item-form button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-item-form button:hover {
+    background-color: #2980b9;
+  }
+  

@@ -1,0 +1,15 @@
+.stock-take-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .stock-take-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .stock-take-list input {
+    margin-left: 10px;
+    padding: 5px;
+  }
+  

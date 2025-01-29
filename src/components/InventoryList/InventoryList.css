@@ -1,0 +1,96 @@
+/* InventoryList Styles */
+.inventory-list-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+/* Header for the columns */
+.inventory-list.headers {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr) 20px;
+  padding: 10px;
+  background-color: #3498db;
+  font-weight: bold;
+  border: 1px solid #ddd;
+  text-align: center;
+  height: 60px;
+  position: relative;
+}
+
+/* Row styling */
+.inventory-list.row {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr) 20px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Styling for each column */
+.inventory-list div {
+  padding: 5px;
+  border-right: 1px solid #ddd;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.inventory-list div:last-child {
+  border-right: none;
+}
+
+.inventory-list .actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inventory-list button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.inventory-list button:hover {
+  background-color: darkred;
+}
+
+/* Filter Boxes */
+div .inventory-list.filters {
+  position: absolute;
+  height: 20px;
+  bottom: 0;
+  width: 50px;
+  border: none;
+  margin-left: 20px;
+}
+
+.inventory-list select {
+  position: relative;
+  width: 100%;
+  bottom: 0;
+  background: #f3e8e8;
+  border: none;
+}
+
+.inventory-list.filters span {
+  margin-bottom: 10px;
+  display: block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .inventory-list {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .inventory-list {
+    grid-template-columns: 1fr;
+  }
+}
