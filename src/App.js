@@ -11,18 +11,18 @@ function App() {
   const [items, setItems] = useState(() =>
     getItemsFromLocalStorage('items', [
       {
-        stockCode: '001',
-        description: 'Item 1',
-        stockLevelRequired: 50,
-        responsibleCounter: 'User 1',
-        responsibleBuyer: 'Buyer 1',
-        currentLevel: 20,
-        unit: 'pcs',
-        orderQuantity: 30,
-        purchaseUnit: 'box',
-        lastStockDate: '2023-12-31',
-        stockRoom: 'Room A',
-        supplier: 'Supplier X',
+        stockCode: '',
+        description: '',
+        stockLevelRequired: '',
+        responsibleCounter: '',
+        responsibleBuyer: '',
+        currentLevel: '',
+        unit: '',
+        orderQuantity: '',
+        purchaseUnit: '',
+        lastStockDate: '',
+        stockRoom: '',
+        supplier: '',
       },
     ])
   );
@@ -47,6 +47,7 @@ function App() {
   }
 
   return (
+  
     <Router>
       <div className="App">
         <Navigation />

@@ -6,9 +6,11 @@ function InventoryList({ filteredItems, removeItem }) {
     <>
       {filteredItems.map((item, index) => (
         <div className="inventory-list row" key={index}>
-          {Object.keys(item).map((key) => (
-            <div key={key}>{item[key]}</div>
-          ))}
+          {Object.keys(item)
+            .filter((key) => key !== 'nextAvailableDate')  // Exclude 'nextAvailableDate'
+            .map((key) => (
+              <div key={key}>{item[key]}</div>
+            ))}
           <div className="delete-btn" onClick={() => removeItem(index)}>
             X
           </div>

@@ -5,7 +5,7 @@ import AddItemForm from './AddItemForm';
 import InventoryFilters from './InventoryFilters';
 import InventoryList from '../InventoryList/InventoryList';
 
-function EditorsPage({ items, handleChange, removeItem, addNewItem }) {
+function EditorsPage({ handleChange, removeItem, addNewItem }) {
   const [newItem, setNewItem] = useState({
     stockCode: '',
     description: '',
@@ -20,13 +20,33 @@ function EditorsPage({ items, handleChange, removeItem, addNewItem }) {
     stockRoom: '',
     supplier: '',
   });
-  
+  const [items, setItems] = useState([]);
+
+  // Load and sort items from localStorage
+  useEffect(() => {
+    const loadItems = () => {
+      const storedItems = JSON.parse(localStorage.getItem('items')) || [];
+      // Sort items alphabetically by stockCode (A-Z)
+      storedItems.sort((a, b) => a.stockCode.localeCompare(b.stockCode));
+      setItems(storedItems);
+    };
+
+    loadItems();
+
+    // Listen for changes to localStorage and update items
+    window.addEventListener('storage', loadItems);
+
+    // Cleanup listener on unmount
+    return () => {
+      window.removeEventListener('storage', loadItems);
+    };
+  }, []);
 
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [filters, setFilters] = useState({});
   const [filterOptions, setFilterOptions] = useState({});
 
-  // Dynamically generate filter options
+  // Dynamically generate filter options based on the items data
   useEffect(() => {
     const generateOptions = (data) => {
       if (!data.length) return; // Ensure data has elements
@@ -70,7 +90,8 @@ function EditorsPage({ items, handleChange, removeItem, addNewItem }) {
   const filteredItems = (items || []).filter((item) =>
     Object.keys(filters).every(
       (key) =>
-        !filters[key] || item[key]?.toString().toLowerCase().includes(filters[key].toLowerCase())
+        !filters[key] ||
+        item[key]?.toString().toLowerCase().includes(filters[key].toLowerCase())
     )
   );
 

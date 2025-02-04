@@ -1,4 +1,57 @@
+/* StockTakePage.css */
+
 .stock-take-page {
-    padding: 20px;
-  }
-  
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.stock-take-page h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.stock-take-table {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.table-header,
+.stock-take-item {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.table-header {
+  font-weight: bold;
+  background-color: #f4f4f4;
+}
+
+.stock-take-item {
+  background-color: #fafafa;
+  align-items: center;
+}
+
+.input-field {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.update-button {
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.update-button:hover {
+  background-color: #45a049;
+}
