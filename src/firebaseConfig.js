@@ -1,7 +1,6 @@
-// firebaseConfig.js
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-import { getAnalytics } from "firebase/analytics";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCBJJC0xgrF8MkKOmNWsAU9whioz68FKqA",
@@ -13,11 +12,12 @@ const firebaseConfig = {
     measurementId: "G-T18T2TBMEK"
   };
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-
+  
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const firestore = firebase.firestore();
-export { firestore };
+
+// Initialize Firestore
+const db = getFirestore(app);
+
+// Export the Firestore instance
+export { db };
