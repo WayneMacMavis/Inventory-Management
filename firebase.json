@@ -1,7 +1,7 @@
 {
   "hosting": {
     "site": "skeg-inventory-management-3d21f",
-    "public": "public",
+    "public": "build",
     "ignore": [
       "firebase.json",
       "**/.*",
