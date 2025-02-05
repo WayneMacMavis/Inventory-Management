@@ -8,8 +8,8 @@ const firebaseConfig = {
     projectId: "skeg-inventory-management",
     storageBucket: "skeg-inventory-management.firebasestorage.app",
     messagingSenderId: "437729522224",
-    appId: "1:437729522224:web:44106b82b795ce731eb3f5",
-    measurementId: "G-T18T2TBMEK"
+    appId: "1:437729522224:web:6bafcc33e49f1f141eb3f5",
+    measurementId: "G-WH6XEKR0J4"
   };
 
   
