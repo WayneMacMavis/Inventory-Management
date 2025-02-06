@@ -6,7 +6,7 @@ import InventoryFilters from './InventoryFilters';
 import InventoryList from '../InventoryList/InventoryList';
 
 // Import Firestore functions and the db instance
-import { db } from '../firebaseConfig';
+import { db } from '../../firebaseConfig';
 import { collection, onSnapshot, addDoc, deleteDoc, doc } from "firebase/firestore";
 
 function EditorsPage() {
