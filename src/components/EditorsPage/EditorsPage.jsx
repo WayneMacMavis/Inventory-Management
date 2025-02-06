@@ -42,14 +42,16 @@ function EditorsPage() {
   const [filters, setFilters] = useState({});
   const [filterOptions, setFilterOptions] = useState({});
 
-  // Dynamically generate filter options based on the items data
+  // Generate filter options based on the items data (ignoring "id")
   useEffect(() => {
     const generateOptions = (data) => {
       if (!data.length) return;
       const options = {};
-      Object.keys(data[0]).forEach((key) => {
-        options[key] = [...new Set(data.map((item) => item[key]))];
-      });
+      Object.keys(data[0])
+        .filter(key => key !== 'id')
+        .forEach((key) => {
+          options[key] = [...new Set(data.map((item) => item[key]))];
+        });
       setFilterOptions(options);
     };
     generateOptions(items || []);
