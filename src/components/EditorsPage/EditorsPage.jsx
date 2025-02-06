@@ -5,7 +5,11 @@ import AddItemForm from './AddItemForm';
 import InventoryFilters from './InventoryFilters';
 import InventoryList from '../InventoryList/InventoryList';
 
-function EditorsPage({ handleChange, removeItem, addNewItem }) {
+// Import Firestore functions and the db instance
+import { db } from '../firebaseConfig';
+import { collection, onSnapshot, addDoc, deleteDoc, doc } from "firebase/firestore";
+
+function EditorsPage() {
   const [newItem, setNewItem] = useState({
     stockCode: '',
     description: '',
@@ -22,24 +26,16 @@ function EditorsPage({ handleChange, removeItem, addNewItem }) {
   });
   const [items, setItems] = useState([]);
 
-  // Load and sort items from localStorage
+  // Subscribe to the "items" collection in Firestore
   useEffect(() => {
-    const loadItems = () => {
-      const storedItems = JSON.parse(localStorage.getItem('items')) || [];
+    const unsubscribe = onSnapshot(collection(db, "items"), (snapshot) => {
+      const itemsFromFirestore = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       // Sort items alphabetically by stockCode (A-Z)
-      storedItems.sort((a, b) => a.stockCode.localeCompare(b.stockCode));
-      setItems(storedItems);
-    };
-
-    loadItems();
-
-    // Listen for changes to localStorage and update items
-    window.addEventListener('storage', loadItems);
-
+      itemsFromFirestore.sort((a, b) => a.stockCode.localeCompare(b.stockCode));
+      setItems(itemsFromFirestore);
+    });
     // Cleanup listener on unmount
-    return () => {
-      window.removeEventListener('storage', loadItems);
-    };
+    return () => unsubscribe();
   }, []);
 
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -49,7 +45,7 @@ function EditorsPage({ handleChange, removeItem, addNewItem }) {
   // Dynamically generate filter options based on the items data
   useEffect(() => {
     const generateOptions = (data) => {
-      if (!data.length) return; // Ensure data has elements
+      if (!data.length) return;
       const options = {};
       Object.keys(data[0]).forEach((key) => {
         options[key] = [...new Set(data.map((item) => item[key]))];
@@ -64,22 +60,38 @@ function EditorsPage({ handleChange, removeItem, addNewItem }) {
     setNewItem({ ...newItem, [name]: value });
   };
 
-  const addItem = () => {
-    addNewItem(newItem);
-    setNewItem({
-      stockCode: '',
-      description: '',
-      stockLevelRequired: '',
-      responsibleCounter: '',
-      responsibleBuyer: '',
-      currentLevel: '',
-      unit: '',
-      orderQuantity: '',
-      purchaseUnit: '',
-      lastStockDate: '',
-      stockRoom: '',
-      supplier: '',
-    });
+  // Add a new item to Firestore
+  const addItem = async () => {
+    try {
+      await addDoc(collection(db, "items"), newItem);
+      console.log("Item added successfully to Firestore!");
+      setNewItem({
+        stockCode: '',
+        description: '',
+        stockLevelRequired: '',
+        responsibleCounter: '',
+        responsibleBuyer: '',
+        currentLevel: '',
+        unit: '',
+        orderQuantity: '',
+        purchaseUnit: '',
+        lastStockDate: '',
+        stockRoom: '',
+        supplier: '',
+      });
+    } catch (error) {
+      console.error("Error adding item: ", error);
+    }
+  };
+
+  // Remove an item from Firestore by its document ID
+  const handleRemoveItem = async (itemId) => {
+    try {
+      await deleteDoc(doc(db, "items", itemId));
+      console.log("Item removed successfully!");
+    } catch (error) {
+      console.error("Error removing item: ", error);
+    }
   };
 
   const handleFilterChange = (e) => {
@@ -117,7 +129,7 @@ function EditorsPage({ handleChange, removeItem, addNewItem }) {
           filterOptions={filterOptions}
           handleFilterChange={handleFilterChange}
         />
-        <InventoryList filteredItems={filteredItems} removeItem={removeItem} />
+        <InventoryList filteredItems={filteredItems} removeItem={handleRemoveItem} />
       </div>
     </div>
   );
