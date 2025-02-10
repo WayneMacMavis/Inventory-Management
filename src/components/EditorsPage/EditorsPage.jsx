@@ -1,3 +1,4 @@
+// EditorsPage.jsx
 import React, { useState, useEffect } from 'react';
 import { users } from '../Users/Users';
 import './EditorsPage.css';
@@ -5,11 +6,11 @@ import AddItemForm from './AddItemForm';
 import InventoryFilters from './InventoryFilters';
 import InventoryList from '../InventoryList/InventoryList';
 
-// Import Firestore functions and the db instance
 import { db } from '../../firebaseConfig';
 import { collection, onSnapshot, addDoc, deleteDoc, doc } from "firebase/firestore";
 
 function EditorsPage() {
+  // State for new item
   const [newItem, setNewItem] = useState({
     stockCode: '',
     description: '',
@@ -24,25 +25,34 @@ function EditorsPage() {
     stockRoom: '',
     supplier: '',
   });
+  
+  // Items from Firestore
   const [items, setItems] = useState([]);
-
-  // Subscribe to the "items" collection in Firestore
+  
+  // Subscribe to Firestore "items" collection
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "items"), (snapshot) => {
-      const itemsFromFirestore = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      // Sort items alphabetically by stockCode (A-Z)
-      itemsFromFirestore.sort((a, b) => a.stockCode.localeCompare(b.stockCode));
-      setItems(itemsFromFirestore);
-    });
-    // Cleanup listener on unmount
+    const unsubscribe = onSnapshot(
+      collection(db, "items"),
+      (snapshot) => {
+        const itemsFromFirestore = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        // Sort items alphabetically by stockCode (A-Z)
+        itemsFromFirestore.sort((a, b) => a.stockCode.localeCompare(b.stockCode));
+        setItems(itemsFromFirestore);
+      },
+      (error) => {
+        console.error("Error in snapshot listener:", error);
+      }
+    );
     return () => unsubscribe();
   }, []);
-
+  
+  // State for showing/hiding the add item form
   const [isFormVisible, setIsFormVisible] = useState(false);
+  
+  // State for filters
   const [filters, setFilters] = useState({});
   const [filterOptions, setFilterOptions] = useState({});
-
-  // Generate filter options based on the items data (ignoring "id")
+  
   useEffect(() => {
     const generateOptions = (data) => {
       if (!data.length) return;
@@ -56,13 +66,12 @@ function EditorsPage() {
     };
     generateOptions(items || []);
   }, [items]);
-
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewItem({ ...newItem, [name]: value });
   };
-
-  // Add a new item to Firestore
+  
   const addItem = async () => {
     try {
       await addDoc(collection(db, "items"), newItem);
@@ -85,8 +94,7 @@ function EditorsPage() {
       console.error("Error adding item: ", error);
     }
   };
-
-  // Remove an item from Firestore by its document ID
+  
   const handleRemoveItem = async (itemId) => {
     try {
       await deleteDoc(doc(db, "items", itemId));
@@ -95,12 +103,12 @@ function EditorsPage() {
       console.error("Error removing item: ", error);
     }
   };
-
+  
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters({ ...filters, [name]: value });
   };
-
+  
   const filteredItems = (items || []).filter((item) =>
     Object.keys(filters).every(
       (key) =>
@@ -108,13 +116,13 @@ function EditorsPage() {
         item[key]?.toString().toLowerCase().includes(filters[key].toLowerCase())
     )
   );
-
+  
   return (
     <div className="editors-page">
       <button onClick={() => setIsFormVisible(!isFormVisible)}>
         {isFormVisible ? 'Hide Form' : 'Show Form'}
       </button>
-
+  
       {isFormVisible && (
         <AddItemForm
           newItem={newItem}
@@ -123,7 +131,7 @@ function EditorsPage() {
           addItem={addItem}
         />
       )}
-
+  
       <div className="inventory-list-container">
         <InventoryFilters
           newItem={newItem}

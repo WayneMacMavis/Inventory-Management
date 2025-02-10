@@ -1,51 +1,84 @@
-nav {
+/* Navigation.css */
+.navigation {
     display: flex;
-    justify-content: space-around;
-    background-color: #2c3e50;
-    padding: 10px 0;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #444444f5;
+    padding: 10px 20px;
   }
   
-  nav a {
+  .nav-left {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-left a {
     color: white;
     text-decoration: none;
     font-size: 1.2rem;
     font-weight: bold;
     padding: 10px 20px;
     border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
   }
   
-  nav a:hover {
-    background-color: #e74c3c;
-    color: white;
+  .nav-left a:hover {
+    background-color: #ff402af8;
     transform: scale(1.1);
+    box-shadow: rgb(0, 0, 0);
   }
   
   /* Active link */
-  nav a.active {
+  .nav-left a.active {
     background-color: #3498db;
     color: white;
     font-weight: bold;
   }
   
-  /* For smaller devices (tablet or mobile) */
-  @media (max-width: 768px) {
-    nav {
-      flex-direction: column; /* Stack navigation items vertically */
-      align-items: center; /* Center items horizontally */
-    }
+  .nav-right {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Updated logout button styles for debugging */
+  .logout-btn {
+    background-color: rgba(231, 77, 60, 0); /* Temporary visible background */
+    border: 1px solid white; /* Temporary border to debug */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
   
-    nav a {
-      font-size: 1.1rem; /* Adjust font size */
-      padding: 8px 16px; /* Reduce padding */
+  .logout-btn:hover {
+    background-color: rgba(0, 68, 255, 0.4);
+    transform: scale(1.1);
+  }
+  
+  /* Responsive styling for smaller devices */
+  @media (max-width: 768px) {
+    .navigation {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .nav-left {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .nav-left a {
+      font-size: 1.1rem;
+      padding: 8px 16px;
     }
   }
   
-  /* For very small devices (mobile phones) */
   @media (max-width: 480px) {
-    nav a {
-      font-size: 1rem; /* Smaller font size for smaller screens */
-      padding: 6px 12px; /* Less padding */
+    .nav-left a {
+      font-size: 1rem;
+      padding: 6px 12px;
     }
   }
   
