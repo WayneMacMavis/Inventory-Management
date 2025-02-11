@@ -28,20 +28,35 @@ function AddItemForm({ newItem, users, handleInputChange, addItem }) {
         placeholder="Stock Level Required"
         onChange={handleInputChange}
       />
-      <input
-        type="text"
+
+      {/* Dropdown for Responsible Counter */}
+      <select
         name="responsibleCounter"
         value={newItem.responsibleCounter}
-        placeholder="Responsible Counter"
         onChange={handleInputChange}
-      />
-      <input
-        type="text"
+      >
+        <option value="">Responsible Counter</option>
+        {users.map((user, index) => (
+          <option key={index} value={user}>
+            {user}
+          </option>
+        ))}
+      </select>
+
+      {/* Dropdown for Responsible Buyer */}
+      <select
         name="responsibleBuyer"
         value={newItem.responsibleBuyer}
-        placeholder="Responsible Buyer"
         onChange={handleInputChange}
-      />
+      >
+        <option value="">Responsible Buyer</option>
+        {users.map((user, index) => (
+          <option key={index} value={user}>
+            {user}
+          </option>
+        ))}
+      </select>
+
       <input
         type="text"
         name="currentLevel"
@@ -56,7 +71,7 @@ function AddItemForm({ newItem, users, handleInputChange, addItem }) {
         value={newItem.unit}
         onChange={handleInputChange}
       >
-        <option value="">Select Unit</option>
+        <option value="">Unit</option>
         {unitOptions.map((option) => (
           <option key={option} value={option}>
             {option}
@@ -78,7 +93,7 @@ function AddItemForm({ newItem, users, handleInputChange, addItem }) {
         value={newItem.purchaseUnit}
         onChange={handleInputChange}
       >
-        <option value="">Select Purchase Unit</option>
+        <option value="">Purchase Unit</option>
         {unitOptions.map((option) => (
           <option key={option} value={option}>
             {option}
@@ -114,4 +129,3 @@ function AddItemForm({ newItem, users, handleInputChange, addItem }) {
 }
 
 export default AddItemForm;
-

@@ -70,7 +70,7 @@ function Auth() {
         we only render the sign-in/sign-up form here.
       */}
       <h3>Login / Sign Up</h3>
-      <form>
+      <form onSubmit={logIn}>
       <input
         type="email"
         placeholder="Email"

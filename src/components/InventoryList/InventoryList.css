@@ -1,36 +1,60 @@
-/* InventoryList Styles */
+/* General Styles */
+:root {
+  --font-family: Arial, sans-serif;
+  --background-color: #f4f4f4;
+  --primary-color: #3498db;
+  --secondary-color: #ddd;
+  --text-color: #fff;
+  --border-radius: 5px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --padding: 5px;
+  --margin-top: 20px;
+  --input-width: 100px;
+  --input-max-width: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+}
+
+/* Inventory List Container */
 .inventory-list-container {
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  margin-top: var(--margin-top);
   overflow-x: auto;
 }
 
-/* Header for the columns */
-.inventory-list.headers {
+/* Header and Row Styling */
+.inventory-list {
   display: grid;
-  grid-template-columns: repeat(12, 1fr) 20px;
-  padding: 10px;
-  background-color: #3498db;
+  grid-template-columns: repeat(12, 1fr) 40px;
+  padding: var(--padding);
+  border-bottom: 1px solid var(--secondary-color);
+  align-items: center;
+}
+
+.inventory-list.headers {
+  background-color: var(--primary-color);
   font-weight: bold;
-  border: 1px solid #ddd;
+  border: 1px solid var(--secondary-color);
   text-align: center;
   height: 60px;
   position: relative;
+  color: var(--text-color);
 }
 
-/* Row styling */
 .inventory-list.row {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr) 20px;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--secondary-color);
 }
 
-/* Styling for each column */
+/* Styling for each column cell */
 .inventory-list div {
   padding: 5px;
-  border-right: 1px solid #ddd;
+  border-right: 1px solid var(--secondary-color);
   word-wrap: break-word;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -40,57 +64,126 @@
   border-right: none;
 }
 
+/* Field cell wrapper for inline editing */
+.field-cell {
+  position: relative;
+}
+
+/* Limit the width of input fields during inline editing */
+.field-cell input {
+  width: var(--input-width);
+  max-width: var(--input-max-width);
+  box-sizing: border-box;
+}
+
+/* Actions column */
 .inventory-list .actions {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.inventory-list button {
-  background-color: red;
-  color: white;
+/* Reset default button styles for menu-button */
+.menu-button {
+  background: none;
   border: none;
-  padding: 5px 10px;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
   cursor: pointer;
-  font-size: 14px;
 }
 
-.inventory-list button:hover {
-  background-color: darkred;
+/* Custom styles for menu-button */
+.menu-button {
+  /* Add your custom styles here */
+  /* For example: */
+  color: #3498db;
+  font-size: 16px;
 }
 
-/* Filter Boxes */
-div .inventory-list.filters {
+/* Custom styles for popover */
+.popover {
+  /* Ensure the popover is properly positioned and visible */
+  display: block;
   position: absolute;
-  height: 20px;
-  bottom: 0;
-  width: 50px;
-  border: none;
-  margin-left: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  /* Add any additional custom styles here */
 }
 
-.inventory-list select {
-  position: relative;
-  width: 100%;
-  bottom: 0;
-  background: #f3e8e8;
-  border: none;
-}
-
-.inventory-list.filters span {
-  margin-bottom: 10px;
+.popover-trigger:focus + .popover,
+.popover-trigger:hover + .popover {
   display: block;
 }
+
+.popover-button {
+  background: none;
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+/* Specific styles for Edit button */
+.edit-button {
+  color: #3498db; /* Primary color */
+}
+
+/* Specific styles for Delete button */
+.delete-button {
+  color: #e74c3c; /* Danger color */
+}
+
+/* Optional: Add hover effects */
+.popover-button:hover {
+  background-color: #f0f0f0;
+}
+
+  /* Base styles for action buttons */
+  .action-button {
+    position: relative;
+    background-color: #0331ff; /* Default blue background */
+    color: #000000; /* White text */
+    border: none;
+    padding: 3px 5px;
+    margin: 0px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Specific styles for Save button */
+  .save-button {
+    background-color: #2ecc71; /* Green background */
+  }
+  
+  /* Specific styles for Cancel button */
+  .cancel-button {
+    background-color: #e74c3c; /* Red background */
+  }
+  
+  /* Hover effects */
+  .action-button:hover {
+    opacity: 0.8;
+  }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .inventory-list {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(6, 1fr) 40px;
   }
 }
 
 @media (max-width: 480px) {
   .inventory-list {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 40px;
   }
 }
