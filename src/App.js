@@ -16,7 +16,7 @@ import './App.css';
 const auth = getAuth(app);
 
 function App() {
-  const isIdle = useIdleTimer(6000000); // 10 minutes
+  const isIdle = useIdleTimer(6000); // 10 minutes
 
   // Auto logout on idle
   useEffect(() => {

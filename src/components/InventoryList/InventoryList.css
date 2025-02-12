@@ -55,7 +55,6 @@ body {
 .inventory-list div {
   padding: 5px;
   border-right: 1px solid var(--secondary-color);
-  word-wrap: break-word;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -141,6 +140,16 @@ body {
   color: #e74c3c; /* Danger color */
 }
 
+ /* Specific styles for Save button */
+ .save-button {
+  color: #3498db; /* Primary color */
+}
+
+/* Specific styles for Cancel button */
+.cancel-button {
+  color: #e74c3c; /* Danger color */
+}
+
 /* Optional: Add hover effects */
 .popover-button:hover {
   background-color: #f0f0f0;
@@ -160,15 +169,6 @@ body {
     transition: background-color 0.3s ease;
   }
   
-  /* Specific styles for Save button */
-  .save-button {
-    background-color: #2ecc71; /* Green background */
-  }
-  
-  /* Specific styles for Cancel button */
-  .cancel-button {
-    background-color: #e74c3c; /* Red background */
-  }
   
   /* Hover effects */
   .action-button:hover {

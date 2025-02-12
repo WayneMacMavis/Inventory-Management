@@ -1,44 +1,57 @@
-/* Filter Container */
-.inventory-filters-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Add space between filters */
-    margin-bottom: 20px; /* Add some space below the filters */
-    padding: 10px;
-    background-color: #f9f9f9; /* Light background for contrast */
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+
+/* Individual Filter Item */
+.filter-item {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Filter Label */
+.filter-label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.inventory-filters-container select,
+.inventory-filters-container input {
+  width: 50px; /* Set to your desired width */
+  min-width: 0;
+
+}
+
+.filter-control select{
+  box-shadow: none;
+}
+
+
+/* Hover and Focus States */
+.filter-control select:hover,
+.filter-control select:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.685);
+  outline: none;
+}
+
+.ripples {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  animation: ripple-animation 600ms linear;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(1);
+    opacity: 0;
   }
-  
-  /* Individual Filter Box */
-  .inventory-filters-container select,
-  .inventory-filters-container input {
-    padding: 8px 12px; /* Space inside the box */
-    font-size: 14px; /* Make text readable */
-    border: 1px solid #ddd; /* Light border */
-    border-radius: 5px; /* Rounded corners */
-    background-color: #fff;
-    color: #2c3e50; /* Text color */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .inventory-filters-container {
+    flex-direction: column;
+    gap: 15px;
   }
-  
-  /* Hover and Focus States */
-  .inventory-filters-container select:hover,
-  .inventory-filters-container select:focus,
-  .inventory-filters-container input:hover,
-  .inventory-filters-container input:focus {
-    border-color: #3498db; /* Highlight on hover/focus */
-    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5); /* Add glow effect */
-    outline: none; /* Remove default focus outline */
-  }
-  
-  /* Responsive Layout */
-  @media (max-width: 768px) {
-    .inventory-filters-container {
-      flex-direction: column; /* Stack filters vertically on smaller screens */
-      gap: 15px; /* Adjust spacing for smaller viewports */
-    }
-  }
-  
+}
