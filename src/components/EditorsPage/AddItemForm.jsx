@@ -4,6 +4,7 @@ import './AddItemForm.css'; // Optional: if you have specific styling for this f
 function AddItemForm({ newItem, users, handleInputChange, addItem }) {
   // Options for the dropdowns
   const unitOptions = ["kg", "g", "l", "ml", "m", "each"];
+  const stockRoomOptions = ["General", "Model Shop", "Machine Shop", "Electronics", "Stationary"];
 
   return (
     <div className="add-item-form">
@@ -100,13 +101,18 @@ function AddItemForm({ newItem, users, handleInputChange, addItem }) {
           </option>
         ))}
       </select>
-      <input
-        type="text"
+      <select
         name="stockRoom"
         value={newItem.stockRoom}
-        placeholder="Stock Room"
         onChange={handleInputChange}
-      />
+      >
+        <option value="">Stock Room</option>
+        {stockRoomOptions.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
       <input
         type="text"
         name="supplier"
