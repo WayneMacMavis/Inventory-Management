@@ -100,14 +100,6 @@ function AddItemForm({ newItem, users, handleInputChange, addItem }) {
           </option>
         ))}
       </select>
-
-      <input
-        type="text"
-        name="lastStockDate"
-        value={newItem.lastStockDate}
-        placeholder="Last Stock Date"
-        onChange={handleInputChange}
-      />
       <input
         type="text"
         name="stockRoom"

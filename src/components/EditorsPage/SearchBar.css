@@ -1,0 +1,18 @@
+.search-bar {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .search-bar input {
+    width: 80%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+
+  .search-bar input:focus,
+  .search-bar input:focus {
+    outline: none;
+    border-color: #3498db;
+  }
+  

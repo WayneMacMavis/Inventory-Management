@@ -1,16 +1,18 @@
 
 .editors-page {
-  max-width: 95%;
-  margin: 20px auto;
+  max-width: 88%;
+  margin-top: 6% !important;
+  margin: 2px auto;
   padding: 20px;
-  background-color: #ffffff;
+  background-color: #ffffff80;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 15;
 }
 
 
 button {
-  background-color: #3498db;
+  background-color: #ff6fec;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -23,6 +25,10 @@ button {
 button:hover {
   background-color: #2980b9;
 }
+
+.show-form-btn {
+  margin-bottom: 10px;
+ }
 
 .delete-btn {
   position: relative;

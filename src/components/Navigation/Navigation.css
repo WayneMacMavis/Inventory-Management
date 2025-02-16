@@ -23,7 +23,7 @@
   }
   
   .nav-left a:hover {
-    background-color: #ff402af8;
+    background-color: #ff6e2ad7;
     transform: scale(1.1);
     box-shadow: rgb(0, 0, 0);
   }
@@ -53,7 +53,7 @@
   }
   
   .logout-btn:hover {
-    background-color: rgba(0, 68, 255, 0.4);
+    background-color: #ff6e2ad7;
     transform: scale(1.1);
   }
   

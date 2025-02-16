@@ -11,12 +11,13 @@ import Navigation from './components/Navigation/Navigation';
 import { getItemsFromLocalStorage, saveItemsToLocalStorage } from './components/Utils/LocalStorage';
 import { getAuth, onAuthStateChanged, setPersistence, browserSessionPersistence, signOut } from "firebase/auth";
 import { app } from "./firebaseConfig";
+import logoImage from "../src/assets/Skeg-background.png";
 import './App.css';
 
 const auth = getAuth(app);
 
 function App() {
-  const isIdle = useIdleTimer(6000); // 10 minutes
+  const isIdle = useIdleTimer(25000); // 10 minutes
 
   // Auto logout on idle
   useEffect(() => {
@@ -138,6 +139,7 @@ function App() {
             <Route path="*" element={<Auth />} />
           </Routes>
         )}
+         <img src={logoImage} alt="Logo" className="app-background" />
       </div>
     </Router>
   );

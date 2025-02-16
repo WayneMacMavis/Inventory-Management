@@ -1,4 +1,3 @@
-// Navigation.jsx
 import React from 'react';
 import { getAuth, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
@@ -22,14 +21,21 @@ const Navigation = () => {
     }
   };
 
+  const handleDownload = () => {
+    const downloadUrl = 'http://localhost:3000/main.js'; // Replace with your file's URL
+    window.electron.initiateDownload(downloadUrl);
+  };
+
   return (
     <nav className="navigation">
       <div className="nav-left">
-        <a href="/">Editor</a>
+        <a href="/">Inventory</a>
         <a href="/stock-take">Stock Take</a>
         <a href="/procurement">Procurement</a>
       </div>
       <div className="nav-right">
+        {/* Download Button */}
+        {/* <button onClick={handleDownload}>Download</button> */}
         <button className="logout-btn" onClick={handleLogout}>
           <FiLogOut size={13} color="white" />
         </button>

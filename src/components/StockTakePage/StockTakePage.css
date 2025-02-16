@@ -1,6 +1,7 @@
 /* StockTakePage.css */
 
 .stock-take-page {
+  margin-top: 2%;
   padding: 20px;
   font-family: Arial, sans-serif;
 }
@@ -13,38 +14,63 @@
 .stock-take-table {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-
-.table-header,
-.stock-take-item {
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  gap: 10px;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
+  gap: 0; /* Remove gaps to keep border styling clean */
+  border-collapse: collapse;
+  width: 100%;
+  background: #ffffff8c;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 0;
 }
 
 .table-header {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  background-color: #3498dbd3;
+  color: white;
+  padding: 10px;
   font-weight: bold;
-  background-color: #f4f4f4;
+  text-align: center;
+  border-bottom: 2px solid #3088c2d8;
 }
 
 .stock-take-item {
-  background-color: #fafafa;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  text-align: center;
   align-items: center;
+  padding: 10px;
+  border-bottom: 2px solid #ddd; /* Item border */
+  background-color: #ffffff71;
+  transition: background-color 0.3s ease;
+}
+
+.stock-take-item:nth-child(odd) {
+  background-color: #f9f9f977; /* Alternate row colors */
+}
+
+.stock-take-item:hover {
+  background-color: #e6f7ffcc; /* Highlight on hover */
 }
 
 .input-field {
-  width: 100%;
+  width: 80px;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  text-align: center;
+}
+
+.input-field:focus,
+.input-field:hover {
+  outline: none;
+  border-color: #3498db;
 }
 
 .update-button {
   padding: 5px 10px;
-  background-color: #4caf50;
+  background-color: #ff6fec;
   color: white;
   border: none;
   border-radius: 4px;
@@ -53,5 +79,5 @@
 }
 
 .update-button:hover {
-  background-color: #45a049;
+  background-color: #3498dbd8;
 }

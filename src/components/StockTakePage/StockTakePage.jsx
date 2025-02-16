@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './StockTakePage.css';
+import { db } from '../../firebaseConfig';
+import { collection, onSnapshot, updateDoc, doc } from "firebase/firestore";
 
 function StockTakePage() {
   const [items, setItems] = useState([]);
@@ -7,89 +9,96 @@ function StockTakePage() {
   const [visibility, setVisibility] = useState({});
 
   useEffect(() => {
-    const storedItems = JSON.parse(localStorage.getItem('items')) || [];
-    setItems(storedItems);
+    // Subscribe to the "items" collection in Firestore.
+    const unsubscribe = onSnapshot(
+      collection(db, "items"),
+      (snapshot) => {
+        const itemsFromFirestore = snapshot.docs.map(docSnap => ({
+          id: docSnap.id,
+          ...docSnap.data()
+        }));
 
-    const initialStockLevels = {};
-    const initialVisibility = {};
+        // Sort items alphabetically by stockCode, ensuring stockCode is a string.
+        itemsFromFirestore.sort((a, b) => {
+          const stockCodeA = a.stockCode || ''; // Default to empty string if undefined
+          const stockCodeB = b.stockCode || ''; // Default to empty string if undefined
+          return stockCodeA.localeCompare(stockCodeB);
+        });
 
-    storedItems.forEach(item => {
-      initialStockLevels[item.stockCode] = '';
+        setItems(itemsFromFirestore);
 
-      const hiddenTimestamp = localStorage.getItem(`hidden_${item.stockCode}`);
-      if (hiddenTimestamp) {
-        const elapsedTime = Date.now() - parseInt(hiddenTimestamp, 10);
-        if (elapsedTime < 30000) {
-          initialVisibility[item.stockCode] = false;
-          setTimeout(() => {
-            setVisibility(prev => ({ ...prev, [item.stockCode]: true }));
-            localStorage.removeItem(`hidden_${item.stockCode}`);
-          }, 30000 - elapsedTime);
-        } else {
-          initialVisibility[item.stockCode] = true;
-          localStorage.removeItem(`hidden_${item.stockCode}`);
-        }
-      } else {
-        initialVisibility[item.stockCode] = true;
+        const newStockLevels = {};
+        const newVisibility = {};
+        itemsFromFirestore.forEach(item => {
+          // Use the unique Firebase id as key
+          newStockLevels[item.id] = stockLevels[item.id] || '';
+          const hiddenTimestamp = localStorage.getItem(`hidden_${item.id}`);
+          if (hiddenTimestamp) {
+            const elapsedTime = Date.now() - parseInt(hiddenTimestamp, 10);
+            if (elapsedTime < 30000) {
+              newVisibility[item.id] = false;
+              setTimeout(() => {
+                setVisibility(prev => ({ ...prev, [item.id]: true }));
+                localStorage.removeItem(`hidden_${item.id}`);
+              }, 30000 - elapsedTime);
+            } else {
+              newVisibility[item.id] = true;
+              localStorage.removeItem(`hidden_${item.id}`);
+            }
+          } else {
+            newVisibility[item.id] = true;
+          }
+        });
+        setStockLevels(newStockLevels);
+        setVisibility(newVisibility);
+      },
+      (error) => {
+        console.error("Error fetching items from firebase:", error);
       }
-    });
+    );
+    return () => unsubscribe();
+  }, [stockLevels]);
 
-    setStockLevels(initialStockLevels);
-    setVisibility(initialVisibility);
-  }, []);
-
-  const handleStockChange = (e, stockCode) => {
+  const handleStockChange = (e, itemId) => {
     setStockLevels({
       ...stockLevels,
-      [stockCode]: e.target.value,
+      [itemId]: e.target.value,
     });
   };
 
-  const updateStock = (stockCode) => {
-    const updatedItems = items.map(item => {
-      if (item.stockCode === stockCode) {
-        if (stockLevels[stockCode]) {
-          return {
-            ...item,
-            currentLevel: stockLevels[stockCode],
-            lastStockDate: new Date().toLocaleDateString(),
-          };
-        } else {
-          alert('Please enter a stock level.');
-        }
-      }
-      return item;
-    });
+  const updateStock = async (itemId) => {
+    if (stockLevels[itemId] === '') {
+      alert('Please enter a stock level.');
+      return;
+    }
+    try {
+      await updateDoc(doc(db, "items", itemId), {
+        currentLevel: stockLevels[itemId],
+        lastStockDate: new Date().toLocaleDateString()
+      });
+      console.log("Item updated successfully in firebase!");
 
-    setItems(updatedItems);
-    localStorage.setItem('items', JSON.stringify(updatedItems));
-
-    setVisibility(prevVisibility => ({
-      ...prevVisibility,
-      [stockCode]: false,
-    }));
-
-    const hideTimestamp = Date.now();
-    localStorage.setItem(`hidden_${stockCode}`, hideTimestamp.toString());
-
-    setTimeout(() => {
-      setVisibility(prevVisibility => ({
-        ...prevVisibility,
-        [stockCode]: true,
+      // Temporarily hide the updated item for 30 seconds.
+      setVisibility(prev => ({
+        ...prev,
+        [itemId]: false
       }));
-      localStorage.removeItem(`hidden_${stockCode}`);
-    }, 30000);
-
-    window.dispatchEvent(new Event('storage'));
+      const hideTimestamp = Date.now();
+      localStorage.setItem(`hidden_${itemId}`, hideTimestamp.toString());
+      setTimeout(() => {
+        setVisibility(prev => ({
+          ...prev,
+          [itemId]: true
+        }));
+        localStorage.removeItem(`hidden_${itemId}`);
+      }, 30000);
+    } catch (error) {
+      console.error("Error updating item:", error);
+    }
   };
-
-  const sortedItems = [...items].sort((a, b) =>
-    a.stockCode.localeCompare(b.stockCode)
-  );
 
   return (
     <div className="stock-take-page">
-      <h1>Stock Take</h1>
       <div className="stock-take-table">
         <div className="table-header">
           <div>Stock Code</div>
@@ -102,9 +111,9 @@ function StockTakePage() {
           <div>Current Stock</div>
           <div>Action</div>
         </div>
-        {sortedItems.map((item) => (
-          visibility[item.stockCode] && (
-            <div className="stock-take-item" key={item.stockCode}>
+        {items.map(item =>
+          visibility[item.id] && (
+            <div className="stock-take-item" key={item.id}>
               <div>{item.stockCode}</div>
               <div>{item.description}</div>
               <div>{item.supplier}</div>
@@ -115,19 +124,22 @@ function StockTakePage() {
               <div>
                 <input
                   type="number"
-                  value={stockLevels[item.stockCode] || ''}
-                  onChange={(e) => handleStockChange(e, item.stockCode)}
+                  value={stockLevels[item.id] || ''}
+                  onChange={(e) => handleStockChange(e, item.id)}
                   className="input-field"
                 />
               </div>
               <div>
-                <button className="update-button" onClick={() => updateStock(item.stockCode)}>
+                <button
+                  className="update-button"
+                  onClick={() => updateStock(item.id)}
+                >
                   Update
                 </button>
               </div>
             </div>
           )
-        ))}
+        )}
       </div>
     </div>
   );

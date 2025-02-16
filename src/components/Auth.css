@@ -6,7 +6,7 @@
     height: 100vh;
     color: #333;
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, rgb(191, 64, 230), rgba(0, 0, 0, 1));
+    background: linear-gradient(135deg, rgba(235, 57, 241, 0.973), rgba(0, 0, 0, 0.966));
   }
 
   .logo {

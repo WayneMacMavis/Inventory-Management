@@ -4,11 +4,12 @@ import './EditorsPage.css';
 import AddItemForm from './AddItemForm';
 import InventoryFilters from './InventoryFilters';
 import InventoryList from '../InventoryList/InventoryList';
+import SearchBar from '../EditorsPage/SearchBar';
+import PaginationControls from './PaginationControls';
 import { db } from '../../firebaseConfig';
 import { collection, onSnapshot, addDoc, deleteDoc, updateDoc, doc } from "firebase/firestore";
 
 function EditorsPage() {
-  // State for new item
   const [newItem, setNewItem] = useState({
     stockCode: '',
     description: '',
@@ -24,23 +25,23 @@ function EditorsPage() {
     supplier: '',
   });
   
-  // Items from Firestore
   const [items, setItems] = useState([]);
-  
-  // State for showing/hiding the add item form
   const [isFormVisible, setIsFormVisible] = useState(false);
-  
-  // State for filters
   const [filters, setFilters] = useState({});
   const [filterOptions, setFilterOptions] = useState({});
-
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  // Pagination state
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  // Listen for items from Firestore
   useEffect(() => {
     const unsubscribe = onSnapshot(
       collection(db, "items"),
       (snapshot) => {
         const itemsFromFirestore = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        // Sort items alphabetically by stockCode (A-Z)
-        itemsFromFirestore.sort((a, b) => a.stockCode.localeCompare(b.stockCode));
+        itemsFromFirestore.sort((a, b) => (a.stockCode || '').localeCompare(b.stockCode || ''));
         setItems(itemsFromFirestore);
       },
       (error) => {
@@ -49,7 +50,8 @@ function EditorsPage() {
     );
     return () => unsubscribe();
   }, []);
-
+  
+  // Generate filter options based on the items data
   useEffect(() => {
     const generateOptions = (data) => {
       if (!data.length) return;
@@ -57,7 +59,7 @@ function EditorsPage() {
       Object.keys(data[0])
         .filter(key => key !== 'id')
         .forEach((key) => {
-          options[key] = [...new Set(data.map((item) => item[key]))];
+          options[key] = [...new Set(data.map((item) => item[key]).filter(Boolean))];
         });
       setFilterOptions(options);
     };
@@ -104,18 +106,34 @@ function EditorsPage() {
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters({ ...filters, [name]: value });
+    // Optionally reset to page 1 when a filter is changed
+    setCurrentPage(1);
   };
   
-  const filteredItems = (items || []).filter((item) =>
-    Object.keys(filters).every(
-      (key) =>
-        !filters[key] ||
-        item[key]?.toString().toLowerCase().includes(filters[key].toLowerCase())
-    )
-  );
-
-  // Update item handler for inline editing.
-  // Destructure the id from the updated item and update Firestore with the rest of the data.
+  // Filtering logic: each item must match all active filters exactly (ignoring case)
+  // and also match the search query (partial match across any field)
+  const filteredItems = (items || []).filter((item) => {
+    const matchesFilters = Object.keys(filters).every((key) => {
+      if (!filters[key]) return true; // No filter selected for this key
+      const itemValue = item[key] ? item[key].toString().trim().toLowerCase() : '';
+      const filterValue = filters[key].toString().trim().toLowerCase();
+      return itemValue === filterValue;
+    });
+    
+    const matchesSearch =
+      searchQuery.trim() === '' ||
+      Object.values(item).some((value) =>
+        value && value.toString().toLowerCase().includes(searchQuery.trim().toLowerCase())
+      );
+    
+    return matchesFilters && matchesSearch;
+  });
+  
+  // Pagination: calculate the items to show on the current page
+  const paginatedItems = itemsPerPage > 0
+    ? filteredItems.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+    : filteredItems;
+  
   const handleUpdateItem = async (updatedItem) => {
     try {
       const { id, ...dataToUpdate } = updatedItem;
@@ -125,13 +143,15 @@ function EditorsPage() {
       console.error("Error updating item: ", error);
     }
   };
-
+  
   return (
     <div className="editors-page">
-      <button onClick={() => setIsFormVisible(!isFormVisible)}>
+      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      
+      <button className='show-form-btn' onClick={() => setIsFormVisible(!isFormVisible)}>
         {isFormVisible ? 'Hide Form' : 'Show Form'}
       </button>
-  
+      
       {isFormVisible && (
         <AddItemForm
           newItem={newItem}
@@ -140,7 +160,7 @@ function EditorsPage() {
           addItem={addItem}
         />
       )}
-  
+      
       <div className="inventory-list-container">
         <InventoryFilters
           newItem={newItem}
@@ -149,9 +169,16 @@ function EditorsPage() {
           handleFilterChange={handleFilterChange}
         />
         <InventoryList 
-          filteredItems={filteredItems} 
+          filteredItems={paginatedItems} 
           removeItem={handleRemoveItem} 
           onUpdate={handleUpdateItem}
+        />
+        <PaginationControls 
+          itemsPerPage={itemsPerPage} 
+          setItemsPerPage={setItemsPerPage}
+          currentPage={currentPage} 
+          setCurrentPage={setCurrentPage}
+          totalItems={filteredItems.length}
         />
       </div>
     </div>
