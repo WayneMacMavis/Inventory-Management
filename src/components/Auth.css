@@ -30,7 +30,7 @@
     align-items: center;
     width: 100%;
     max-width: 400px;
-    background: #ffffff69;
+    background: #ffffffb2;
     padding: 3rem;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.596);
@@ -44,6 +44,12 @@
     border-radius: 4px;
     font-size: 16px;
     box-sizing: border-box;
+  }
+
+  .auth-container input:focus,
+  .auth-container select:focus {
+    outline: none;
+    border-color: #3498db;
   }
   
   .auth-container button {
