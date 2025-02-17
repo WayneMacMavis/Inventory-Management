@@ -3,6 +3,7 @@ import { getAuth, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { app } from '../../firebaseConfig'; // Adjust path as needed
 import { FiLogOut } from 'react-icons/fi'; // Import the logout icon
+import Logo from "../../assets/Logo.png";
 import './Navigation.css';
 
 const auth = getAuth(app);
@@ -21,13 +22,9 @@ const Navigation = () => {
     }
   };
 
-  const handleDownload = () => {
-    const downloadUrl = 'http://localhost:3000/main.js'; // Replace with your file's URL
-    window.electron.initiateDownload(downloadUrl);
-  };
-
   return (
     <nav className="navigation">
+      <img src={Logo} alt="Logo" className="Logo" />
       <div className="nav-left">
         <a href="/">Inventory</a>
         <a href="/stock-take">Stock Take</a>

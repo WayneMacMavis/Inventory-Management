@@ -1,14 +1,12 @@
 // Auth.js
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
 } from "firebase/auth";
 import { app } from "../firebaseConfig"; // adjust path as needed
-import logoImage from "../assets/Skeg-background.png";
+import Logo from "../assets/Logo.png";
 import "./Auth.css";
 
 const auth = getAuth(app);
@@ -52,19 +50,9 @@ function Auth() {
     }
   };
 
-  const logOut = () => {
-    signOut(auth)
-      .then(() => {
-        console.log("User signed out.");
-      })
-      .catch((err) => {
-        console.error("Sign out error:", err);
-      });
-  };
-
   return (
     <div className="auth-container">
-         <img src={logoImage} alt="Logo" className="logo" />
+         <img src={Logo} alt="Logo" className="logo" />
       {/*
         Since App.js is handling the conditional rendering,
         we only render the sign-in/sign-up form here.

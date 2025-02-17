@@ -28,12 +28,12 @@
 .table-header {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
-  background-color: #3498dbd3;
+  background-color: #3498dbfa;
   color: white;
   padding: 10px;
   font-weight: bold;
   text-align: center;
-  border-bottom: 2px solid #3088c2d8;
+  border-bottom: 2px solid #3088c2e8;
 }
 
 .stock-take-item {
@@ -43,16 +43,16 @@
   align-items: center;
   padding: 10px;
   border-bottom: 2px solid #ddd; /* Item border */
-  background-color: #ffffff71;
+  background-color: #fffffff1;
   transition: background-color 0.3s ease;
 }
 
 .stock-take-item:nth-child(odd) {
-  background-color: #f9f9f977; /* Alternate row colors */
+  background-color: #f9f9f9ec; /* Alternate row colors */
 }
 
 .stock-take-item:hover {
-  background-color: #e6f7ffcc; /* Highlight on hover */
+  background-color: #e6f7ffe7; /* Highlight on hover */
 }
 
 .input-field {
@@ -80,5 +80,5 @@
 }
 
 .update-button:hover {
-  background-color: #3498dbd8;
+  background-color: #3498dbf3;
 }

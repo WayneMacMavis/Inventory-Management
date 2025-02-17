@@ -6,16 +6,22 @@
     background-color: #5c5b5bec;
     padding: 10px 20px;
   }
-  
-  .nav-left {
-    display: flex;
-    gap: 20px;
+
+  .Logo {
+    position: relative;
+      top: 3px;      /* Adjust as needed */
+      left: 5px;     /* Adjust as needed */
+      width: 150px;   /* Adjust size as needed */
+      height: auto;
+      z-index: 1000;  /* Ensure it sits above other content */
   }
+  
+
   
   .nav-left a {
     color: white;
     text-decoration: none;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: bold;
     padding: 10px 20px;
     border-radius: 5px;

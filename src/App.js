@@ -11,7 +11,6 @@ import Navigation from './components/Navigation/Navigation';
 import { getItemsFromLocalStorage, saveItemsToLocalStorage } from './components/Utils/LocalStorage';
 import { getAuth, onAuthStateChanged, setPersistence, browserSessionPersistence, signOut } from "firebase/auth";
 import { app } from "./firebaseConfig";
-import logoImage from "../src/assets/Skeg-background.png";
 import './App.css';
 
 const auth = getAuth(app);
@@ -139,7 +138,6 @@ function App() {
             <Route path="*" element={<Auth />} />
           </Routes>
         )}
-         <img src={logoImage} alt="Logo" className="app-background" />
       </div>
     </Router>
   );
